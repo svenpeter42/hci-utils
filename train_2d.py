@@ -71,7 +71,7 @@ if __name__ == '__main__':
         print_progress(dset_data.shape[0], dset_data.shape[0])
 
         print("Learning random forest")
-        rf = vigra.learning.RandomForest3(train_x, train_y, treeCount=100, n_threads=6)
+        rf = vigra.learning.RandomForest3(train_x, train_y, treeCount=100, n_threads=8)
 
         print("Exporting random forest")
         rf.writeHDF5(args.outfile, "/Forest")

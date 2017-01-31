@@ -45,6 +45,8 @@ if __name__ == '__main__':
             for i_blk_x, i_blk_y in itertools.product(range(n_blocks_x), range(n_blocks_y)):
                 print_progress(i_slice + i_progress/n_blocks_total, n_slices, suffix='slice: %03d/%03d block: (%03d,%03d)/(%03d,%03d)' % (i_slice, n_slices, i_blk_x, i_blk_y, n_blocks_x, n_blocks_y), bar_length=80)
 
+                i_blk_x  = i_blk_x << 8
+                i_blk_y  = i_blk_y << 8
                 block = data[i_slice, 0, i_blk_y:i_blk_y+256, i_blk_x:i_blk_x+256, :]
                 dataout[i_slice, 0, i_blk_y:i_blk_y+256, i_blk_x:i_blk_x+256, :] = rf.predictProbabilities(block.reshape((-1, n_features)), n_threads=8).reshape((block.shape[0], block.shape[1], n_classes))
                 i_progress += 1
