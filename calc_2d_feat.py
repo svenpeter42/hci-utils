@@ -9,32 +9,13 @@ import concurrent.futures
 import numpy as np
 from time import sleep
 
-# https://gist.github.com/aubricus/f91fb55dc6ba5557fbab06119420dd6a
-# http://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
-def print_progress(iteration, total, prefix='', suffix='', decimals=1, bar_length=100):
-    """
-    Call in a loop to create terminal progress bar
-    @params:
-        iteration   - Required  : current iteration (Int)
-        total       - Required  : total iterations (Int)
-        prefix      - Optional  : prefix string (Str)
-        suffix      - Optional  : suffix string (Str)
-        decimals    - Optional  : positive number of decimals in percent complete (Int)
-        bar_length  - Optional  : character length of bar (Int)
-    """
-    str_format = "{0:." + str(decimals) + "f}"
-    percents = str_format.format(100 * (iteration / float(total)))
-    filled_length = int(round(bar_length * iteration / float(total)))
-    bar = '█' * filled_length + '-' * (bar_length - filled_length)
+from common import print_progress
 
-    sys.stdout.write('\r%s |%s| %s%s %s' % (prefix, bar, percents, '%', suffix)),
-
-    if iteration == total:
-        sys.stdout.write('\n')
-    sys.stdout.flush()
 
 def calc_all_features(pool, futures, data, fvec, fvecidx, fvecoffset, scales):
     n_features = 1 + 7*len(scales)
+
+    data = np.ascontiguousarray(np.array(data), dtype=np.float32)
 
     def calc_features(data, fvec, fvecidx, fvecoffset, i, scale, j):
         # UGLY!
@@ -76,7 +57,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     print("Loading image file")
-    img = np.array(vigra.impex.readImage(args.infile).transposeToNumpyOrder())
+    img = np.array(vigra.impex.readImage(args.infile).transposeToNumpyOrder(), dtype=np.float32)
 
     y,x,c = img.shape
 

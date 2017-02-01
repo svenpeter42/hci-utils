@@ -24,6 +24,7 @@ if __name__ == '__main__':
 
     print("Loading RF")
     rf = vigra.learning.RandomForest3(args.forest, "/Forest")
+    #rf = vigra.learning.RandomForest(args.forest, "/Forest")
     n_classes = rf.labelCount()
 
     print("Predicting")
